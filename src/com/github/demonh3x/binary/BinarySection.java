@@ -5,12 +5,12 @@ public final class BinarySection {
     private final Long lengthInBits;
 
     public BinarySection(Long bitOffset, Long lengthInBits) {
+        if (bitOffset == null || lengthInBits == null)
+            throw new NullPointerException("No nulls allowed!");
         if (bitOffset < 0L)
             throw new IllegalArgumentException("A negative offset have no meaning!");
         if (lengthInBits < 1L)
             throw new IllegalArgumentException("A section must be at least 1 bit long!");
-        if (bitOffset == null || lengthInBits == null)
-            throw new NullPointerException("No nulls allowed!");
 
         this.bitOffset = bitOffset;
         this.lengthInBits = lengthInBits;

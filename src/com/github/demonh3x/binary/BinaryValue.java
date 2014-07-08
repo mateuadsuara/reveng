@@ -11,14 +11,14 @@ public final class BinaryValue {
     }
 
     public BinaryValue(byte[] data, Long lengthInBits){
+        if (data == null || lengthInBits == null)
+            throw new NullPointerException("No nulls allowed!");
         if (data.length == 0)
             throw new IllegalArgumentException("A value can't exist without data!");
         if (lengthInBits < 1L)
             throw new IllegalArgumentException("A value must be at least 1 bit long!");
         if (lengthInBits/8 > data.length)
             throw new IllegalArgumentException("The length shouldn't be bigger than the actual data length!");
-        if (data == null || lengthInBits == null)
-            throw new NullPointerException("No nulls allowed!");
 
         this.data = data;
         this.lengthInBits = lengthInBits;
