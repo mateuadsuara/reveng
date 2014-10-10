@@ -2,11 +2,11 @@ package com.github.demonh3x.reveng;
 
 import com.github.demonh3x.alchemy.Alchemist;
 
-public class Finder<T> {
+public class TypeFinder<T> {
     private final Alchemist<T, byte[]> alchemist;
     private final RandomReadable readable;
 
-    public Finder(Alchemist<T, byte[]> alchemist, RandomReadable readable) {
+    public TypeFinder(Alchemist<T, byte[]> alchemist, RandomReadable readable) {
         this.alchemist = alchemist;
         this.readable = readable;
     }

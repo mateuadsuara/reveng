@@ -10,7 +10,7 @@ import java.util.*;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
-public class ValueFinderTest {
+public class TypeFinderTest {
     @Test
     public void findAByteInFirstPlace() {
         assertFound(
@@ -72,10 +72,10 @@ public class ValueFinderTest {
     }
 
     private static <T> void assertFound(Alchemist<T, byte[]> alchemist, byte[] data, T value, Set<Integer> expectedFindings) {
-        Finder<T> finder = new Finder<>(alchemist, new ReadableByteArray(data));
+        TypeFinder<T> typeFinder = new TypeFinder<>(alchemist, new ReadableByteArray(data));
 
         final HashSet<Integer> offsets = new HashSet<>();
-        for (Integer offset : finder.find(value))
+        for (Integer offset : typeFinder.find(value))
             offsets.add(offset);
 
         assertThat(offsets, is(expectedFindings));
