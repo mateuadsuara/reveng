@@ -1,35 +1,38 @@
 package com.github.demonh3x.reveng;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import com.github.demonh3x.alchemy.Alchemist;
 
-public class Finder {
-    private final ByteReadable readable;
-
-    public Finder(ByteReadable readable ) {
+public class Finder<T> {
+    private final Alchemist<T, byte[]> alchemist;
+    private final RandomReadable readable;
+    public Finder(Alchemist<T, byte[]> alchemist, RandomReadable readable) {
+        this.alchemist = alchemist;
         this.readable = readable;
     }
 
-    public Set<Integer> find(byte[] value) {
-        HashSet<Integer> offsets = new HashSet<Integer>();
+    public int find(T value) {
+        byte[] expected = alchemist.transmuteForwards(value);
 
-        try {
-            for (int offset = 0; true; offset++)
-                if (isValueAt(value, offset))
-                    offsets.add(offset);
-        } catch (IOException ignored) {}
+        for (int offset = 0; offset < readable.size(); offset++){
+            final byte[] actual = new byte[expected.length];
+            for (int i = 0; i < actual.length; i++) {
+                actual[i] = readable.read(offset +i);
+            }
 
-        return Collections.unmodifiableSet(offsets);
+            if (areEqual(expected, actual))
+                return offset;
+        }
+
+        return -1;
     }
 
-    private boolean isValueAt(byte[] value, int offset) throws IOException {
-        boolean matches = true;
+    private boolean areEqual(byte[] expected, byte[] actual) {
+        if (expected.length != actual.length) return false;
 
-        for (int i = 0; i < value.length && matches; i++)
-            matches = this.readable.read(offset + i) == value[i];
+        for (int i = 0; i < expected.length; i++) {
+            if (expected[i] != actual[i]) return false;
+        }
 
-        return matches;
+        return true;
     }
 }
