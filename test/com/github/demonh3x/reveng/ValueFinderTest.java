@@ -1,5 +1,6 @@
 package com.github.demonh3x.reveng;
 
+import com.github.demonh3x.alchemy.Alchemist;
 import com.github.demonh3x.alchemy.BigEndian4BytesIntegerAlchemist;
 import com.github.demonh3x.alchemy.ByteAlchemist;
 import org.junit.Test;
@@ -15,32 +16,57 @@ import static org.junit.Assert.assertThat;
 public class ValueFinderTest {
     @Test
     public void findAByteInFirstPlace() {
-        Finder<Byte> finder = new Finder<>(new ByteAlchemist(), new ReadableByteArray(new byte[]{0x05}));
-        assertThat(finder.find((byte) 5), is(set(0)));
+        assertFound(
+                new ByteAlchemist(),
+                new byte[]{0x05},
+                (byte) 5,
+                set(0)
+        );
     }
 
     @Test
     public void findAByteInSecondPlace() {
-        Finder<Byte> finder = new Finder<>(new ByteAlchemist(), new ReadableByteArray(new byte[]{0x00, 0x05}));
-        assertThat(finder.find((byte) 5), is(set(1)));
+        assertFound(
+                new ByteAlchemist(),
+                new byte[]{0x00, 0x05},
+                (byte) 5,
+                set(1)
+        );
     }
 
     @Test
     public void findAnIntegerInFirstPlace() {
-        Finder<Integer> finder = new Finder<>(new BigEndian4BytesIntegerAlchemist(), new ReadableByteArray(new byte[]{0x00, 0x00, 0x00, 0x05}));
-        assertThat(finder.find(5), is(set(0)));
+        assertFound(
+                new BigEndian4BytesIntegerAlchemist(),
+                new byte[]{0x00, 0x00, 0x00, 0x05},
+                5,
+                set(0)
+        );
     }
 
     @Test
     public void findAnIntegerInSecondPlace() {
-        Finder<Integer> finder = new Finder<>(new BigEndian4BytesIntegerAlchemist(), new ReadableByteArray(new byte[]{0x00, 0x00, 0x00, 0x00, 0x05}));
-        assertThat(finder.find(5), is(set(1)));
+        assertFound(
+                new BigEndian4BytesIntegerAlchemist(),
+                new byte[]{0x00, 0x00, 0x00, 0x00, 0x05},
+                5,
+                set(1)
+        );
     }
 
     @Test
     public void findAByteInTwoPlaces() {
-        Finder<Byte> finder = new Finder<>(new ByteAlchemist(), new ReadableByteArray(new byte[]{0x00, 0x05, 0x05}));
-        assertThat(finder.find((byte) 5), is(set(1, 2)));
+        assertFound(
+                new ByteAlchemist(),
+                new byte[]{0x00, 0x05, 0x05},
+                (byte) 5,
+                set(1, 2)
+        );
+    }
+
+    private static <T> void assertFound(Alchemist<T, byte[]> alchemist, byte[] data, T value, Set<Integer> expectedFindings) {
+        Finder<T> finder = new Finder<>(alchemist, new ReadableByteArray(data));
+        assertThat(finder.find(value), is(expectedFindings));
     }
 
     private static <T> Set<T> set(T ... args){
