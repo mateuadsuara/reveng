@@ -2,6 +2,9 @@ package com.github.demonh3x.reveng;
 
 import com.github.demonh3x.alchemy.Alchemist;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Finder<T> {
     private final Alchemist<T, byte[]> alchemist;
     private final RandomReadable readable;
@@ -10,7 +13,7 @@ public class Finder<T> {
         this.readable = readable;
     }
 
-    public int find(T value) {
+    public Set<Integer> find(T value) {
         byte[] expected = alchemist.transmuteForwards(value);
 
         for (int offset = 0; offset < readable.size(); offset++){
@@ -19,11 +22,14 @@ public class Finder<T> {
                 actual[i] = readable.read(offset +i);
             }
 
-            if (areEqual(expected, actual))
-                return offset;
+            if (areEqual(expected, actual)){
+                final HashSet<Integer> ret = new HashSet<>();
+                ret.add(offset);
+                return ret;
+            }
         }
 
-        return -1;
+        throw new RuntimeException();
     }
 
     private boolean areEqual(byte[] expected, byte[] actual) {
