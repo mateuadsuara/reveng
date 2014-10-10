@@ -22,6 +22,16 @@ public class ValueFinderTest {
     }
 
     @Test
+    public void findAByteInsideButNotLast() {
+        assertFound(
+                new ByteAlchemist(),
+                new byte[]{0x00, 0x05, 0x00},
+                (byte) 5,
+                set(1)
+        );
+    }
+
+    @Test
     public void findAByteInSecondPlace() {
         assertFound(
                 new ByteAlchemist(),

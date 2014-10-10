@@ -35,6 +35,7 @@ public class Finder<T> {
             private final RandomReadable readable;
             private final int lastPossibleOffset;
             private int currentOffset = -1;
+            private Integer nextOffset = null;
 
             private It(byte[] expectedData, RandomReadable readable) {
                 this.expectedData = expectedData;
@@ -44,22 +45,29 @@ public class Finder<T> {
 
             @Override
             public boolean hasNext() {
-                return currentOffset < lastPossibleOffset;
+                nextOffset = getNext();
+                return nextOffset != null;
             }
 
             @Override
             public Integer next() {
-                advance();
+                return nextOffset;
+            }
+
+            private Integer getNext() {
+                do {
+                    if (isFinished()) return null;
+                    currentOffset++;
+                } while (!areEqual(expectedData, readCurrentData()));
+
                 return currentOffset;
             }
 
-            private void advance() {
-                do {
-                    currentOffset++;
-                } while (!areEqual(expectedData, readActualData()));
+            private boolean isFinished() {
+                return currentOffset >= lastPossibleOffset;
             }
 
-            private byte[] readActualData() {
+            private byte[] readCurrentData() {
                 final byte[] actual = new byte[expectedData.length];
                 for (int i = 0; i < actual.length; i++) {
                     actual[i] = readable.read(currentOffset +i);
