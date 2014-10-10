@@ -37,6 +37,12 @@ public class ValueFinderTest {
         assertThat(finder.find(5), is(set(1)));
     }
 
+    @Test
+    public void findAByteInTwoPlaces() {
+        Finder<Byte> finder = new Finder<>(new ByteAlchemist(), new ReadableByteArray(new byte[]{0x00, 0x05, 0x05}));
+        assertThat(finder.find((byte) 5), is(set(1, 2)));
+    }
+
     private static <T> Set<T> set(T ... args){
         final HashSet<T> ret = new HashSet<>();
         Collections.addAll(ret, args);

@@ -14,22 +14,22 @@ public class Finder<T> {
     }
 
     public Set<Integer> find(T value) {
+        final HashSet<Integer> ret = new HashSet<>();
         byte[] expected = alchemist.transmuteForwards(value);
 
-        for (int offset = 0; offset < readable.size(); offset++){
+        final int lastPossibleOffset = readable.size() - expected.length +1;
+        for (int offset = 0; offset < lastPossibleOffset; offset++){
             final byte[] actual = new byte[expected.length];
             for (int i = 0; i < actual.length; i++) {
                 actual[i] = readable.read(offset +i);
             }
 
             if (areEqual(expected, actual)){
-                final HashSet<Integer> ret = new HashSet<>();
                 ret.add(offset);
-                return ret;
             }
         }
 
-        throw new RuntimeException();
+        return ret;
     }
 
     private boolean areEqual(byte[] expected, byte[] actual) {
