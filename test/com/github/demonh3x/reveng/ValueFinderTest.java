@@ -5,10 +5,7 @@ import com.github.demonh3x.alchemy.BigEndian4BytesIntegerAlchemist;
 import com.github.demonh3x.alchemy.ByteAlchemist;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -66,7 +63,12 @@ public class ValueFinderTest {
 
     private static <T> void assertFound(Alchemist<T, byte[]> alchemist, byte[] data, T value, Set<Integer> expectedFindings) {
         Finder<T> finder = new Finder<>(alchemist, new ReadableByteArray(data));
-        assertThat(finder.find(value), is(expectedFindings));
+
+        final HashSet<Integer> offsets = new HashSet<>();
+        for (Integer offset : finder.find(value))
+            offsets.add(offset);
+
+        assertThat(offsets, is(expectedFindings));
     }
 
     private static <T> Set<T> set(T ... args){
