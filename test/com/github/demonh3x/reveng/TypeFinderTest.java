@@ -17,7 +17,7 @@ public class TypeFinderTest {
                 new ByteAlchemist(),
                 new byte[]{0x05},
                 (byte) 5,
-                set(0)
+                LiteralSet.from(0)
         );
     }
 
@@ -27,7 +27,7 @@ public class TypeFinderTest {
                 new ByteAlchemist(),
                 new byte[]{0x00, 0x05, 0x00},
                 (byte) 5,
-                set(1)
+                LiteralSet.from(1)
         );
     }
 
@@ -37,7 +37,7 @@ public class TypeFinderTest {
                 new ByteAlchemist(),
                 new byte[]{0x00, 0x05},
                 (byte) 5,
-                set(1)
+                LiteralSet.from(1)
         );
     }
 
@@ -47,7 +47,7 @@ public class TypeFinderTest {
                 new BigEndian4BytesIntegerAlchemist(),
                 new byte[]{0x00, 0x00, 0x00, 0x05},
                 5,
-                set(0)
+                LiteralSet.from(0)
         );
     }
 
@@ -57,7 +57,7 @@ public class TypeFinderTest {
                 new BigEndian4BytesIntegerAlchemist(),
                 new byte[]{0x00, 0x00, 0x00, 0x00, 0x05},
                 5,
-                set(1)
+                LiteralSet.from(1)
         );
     }
 
@@ -67,7 +67,7 @@ public class TypeFinderTest {
                 new ByteAlchemist(),
                 new byte[]{0x00, 0x05, 0x05},
                 (byte) 5,
-                set(1, 2)
+                LiteralSet.from(1, 2)
         );
     }
 
@@ -79,11 +79,5 @@ public class TypeFinderTest {
             offsets.add(offset);
 
         assertThat(offsets, is(expectedFindings));
-    }
-
-    private static <T> Set<T> set(T ... args){
-        final HashSet<T> ret = new HashSet<>();
-        Collections.addAll(ret, args);
-        return ret;
     }
 }
