@@ -1,4 +1,4 @@
-package com.github.demonh3x.alchemy;
+package com.github.demonh3x.reveng;
 
 public interface Alchemist<Source, Another> {
     Another transmuteForwards(Source source);

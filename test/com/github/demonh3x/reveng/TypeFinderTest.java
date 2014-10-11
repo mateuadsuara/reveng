@@ -1,6 +1,5 @@
 package com.github.demonh3x.reveng;
 
-import com.github.demonh3x.alchemy.Alchemist;
 import com.github.demonh3x.alchemy.BigEndian4BytesIntegerAlchemist;
 import com.github.demonh3x.alchemy.ByteAlchemist;
 import org.junit.Test;

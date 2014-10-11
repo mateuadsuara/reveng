@@ -1,7 +1,5 @@
 package com.github.demonh3x.reveng;
 
-import com.github.demonh3x.alchemy.Alchemist;
-
 public class TypeFinder<T> {
     private final Alchemist<T, byte[]> alchemist;
     private final RandomReadable readable;

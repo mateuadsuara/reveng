@@ -1,5 +1,7 @@
 package com.github.demonh3x.alchemy;
 
+import com.github.demonh3x.reveng.Alchemist;
+
 import java.nio.ByteBuffer;
 
 public class BigEndian4BytesIntegerAlchemist implements Alchemist<Integer, byte[]> {

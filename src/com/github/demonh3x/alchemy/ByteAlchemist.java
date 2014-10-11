@@ -1,6 +1,8 @@
 package com.github.demonh3x.alchemy;
 
-public class ByteAlchemist implements Alchemist<Byte, byte[]>{
+import com.github.demonh3x.reveng.Alchemist;
+
+public class ByteAlchemist implements Alchemist<Byte, byte[]> {
     @Override
     public byte[] transmuteForwards(Byte aByte) {
         return new byte[]{aByte};
