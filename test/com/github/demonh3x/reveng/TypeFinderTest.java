@@ -2,6 +2,7 @@ package com.github.demonh3x.reveng;
 
 import com.github.demonh3x.alchemy.BigEndian4BytesIntegerAlchemist;
 import com.github.demonh3x.alchemy.ByteAlchemist;
+import com.github.demonh3x.storage.ReadableByteArray;
 import org.junit.Test;
 
 import java.util.*;

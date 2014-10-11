@@ -1,4 +1,6 @@
-package com.github.demonh3x.reveng;
+package com.github.demonh3x.storage;
+
+import com.github.demonh3x.reveng.RandomReadable;
 
 public class ReadableByteArray implements RandomReadable {
     private byte[] data;
