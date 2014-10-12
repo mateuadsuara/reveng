@@ -1,4 +1,4 @@
-package com.github.demonh3x.reveng;
+package com.github.demonh3x.utils;
 
 import java.util.Collections;
 import java.util.HashSet;

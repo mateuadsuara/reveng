@@ -1,5 +1,6 @@
 package com.github.demonh3x.reveng;
 
+import com.github.demonh3x.utils.LiteralSet;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -19,8 +20,8 @@ public class IntersectTest {
     public void GivenTwoSetsOfSameElement_ShouldReturnThatElement() {
         assertInCommon(
                 Arrays.asList(
-                    LiteralSet.from(1),
-                    LiteralSet.from(1)
+                        LiteralSet.from(1),
+                        LiteralSet.from(1)
                 ),
                 LiteralSet.from(1)
         );
