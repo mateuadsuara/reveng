@@ -19,11 +19,8 @@ public class InCommonFinder<T> {
             final RandomReadable readable = entry.getKey();
             final T value = entry.getValue();
 
-            foundOffsets = new TypeFinder<>(
-                    alchemist,
-                    readable,
-                    foundOffsets
-            ).find(value);
+            final TypeFinder<T> finder = new TypeFinder<>(alchemist, readable, foundOffsets);
+            foundOffsets = finder.find(value);
         }
 
         return foundOffsets;
