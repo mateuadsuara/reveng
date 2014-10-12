@@ -5,28 +5,29 @@ import java.util.Iterator;
 public class LazyResults implements Iterable<Integer> {
     private final byte[] expected;
     private final RandomReadable readable;
+    private final Iterable<Integer> offsets;
 
-    public LazyResults(byte[] expected, RandomReadable readable) {
+    public LazyResults(byte[] expected, RandomReadable readable, Iterable<Integer> offsets) {
         this.expected = expected;
         this.readable = readable;
+        this.offsets = offsets;
     }
 
     @Override
     public Iterator<Integer> iterator() {
-        return new It(expected, readable);
+        return new It(expected, readable, offsets.iterator());
     }
 
     private static class It implements Iterator<Integer> {
         private final byte[] expectedData;
         private final RandomReadable readable;
-        private final int lastPossibleOffset;
-        private int currentOffset = -1;
+        private final Iterator<Integer> offsetsIterator;
         private Integer nextOffset = null;
 
-        private It(byte[] expectedData, RandomReadable readable) {
+        private It(byte[] expectedData, RandomReadable readable, Iterator<Integer> offsetsIterator) {
             this.expectedData = expectedData;
             this.readable = readable;
-            this.lastPossibleOffset = readable.size() - expectedData.length;
+            this.offsetsIterator = offsetsIterator;
         }
 
         @Override
@@ -41,19 +42,29 @@ public class LazyResults implements Iterable<Integer> {
         }
 
         private Integer getNext() {
+            Integer offset;
+            byte[] actualData;
+            boolean found;
+
             do {
                 if (isFinished()) return null;
-                currentOffset++;
-            } while (!areEqual(expectedData, readCurrentData()));
+                offset = offsetsIterator.next();
+                try {
+                    actualData = readData(offset);
+                    found = areEqual(expectedData, actualData);
+                } catch (Exception e) {
+                    found = false;
+                }
+            } while (!found);
 
-            return currentOffset;
+            return offset;
         }
 
         private boolean isFinished() {
-            return currentOffset >= lastPossibleOffset;
+            return !offsetsIterator.hasNext();
         }
 
-        private byte[] readCurrentData() {
+        private byte[] readData(Integer currentOffset) {
             final byte[] actual = new byte[expectedData.length];
             for (int i = 0; i < actual.length; i++) {
                 actual[i] = readable.read(currentOffset +i);

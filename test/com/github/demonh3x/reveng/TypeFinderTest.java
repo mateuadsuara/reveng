@@ -73,7 +73,7 @@ public class TypeFinderTest {
     }
 
     private static <T> void assertFound(Alchemist<T, byte[]> alchemist, byte[] data, T value, Set<Integer> expectedFindings) {
-        TypeFinder<T> typeFinder = new TypeFinder<>(alchemist, new ReadableByteArray(data));
+        TypeFinder<T> typeFinder = new TypeFinder<>(alchemist, new ReadableByteArray(data), new NaturalIncrementingSequence(0, data.length));
 
         final HashSet<Integer> offsets = new HashSet<>();
         for (Integer offset : typeFinder.find(value))

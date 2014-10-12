@@ -23,7 +23,8 @@ public class EasyFinder<T> {
                     new ConsumedSet<>(
                             new TypeFinder<>(
                                     alchemist,
-                                    readable
+                                    readable,
+                                    new NaturalIncrementingSequence(0, readable.size())
                             ).find(value)
                     )
             );
