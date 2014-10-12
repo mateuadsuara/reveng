@@ -2,11 +2,11 @@ package com.github.demonh3x.reveng;
 
 import java.util.Map;
 
-public class EasyFinder<T> {
+public class InCommonFinder<T> {
     private final Alchemist<T, byte[]> alchemist;
     private final Map<RandomReadable, T> dumpValueMappings;
 
-    public EasyFinder(Alchemist<T, byte[]> alchemist, Map<RandomReadable, T> dumpValueMappings) {
+    public InCommonFinder(Alchemist<T, byte[]> alchemist, Map<RandomReadable, T> dumpValueMappings) {
         this.alchemist = alchemist;
         this.dumpValueMappings = dumpValueMappings;
     }
