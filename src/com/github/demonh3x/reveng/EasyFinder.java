@@ -1,8 +1,6 @@
 package com.github.demonh3x.reveng;
 
-import java.util.ArrayList;
 import java.util.Map;
-import java.util.Set;
 
 public class EasyFinder<T> {
     private final Alchemist<T, byte[]> alchemist;
@@ -13,23 +11,21 @@ public class EasyFinder<T> {
         this.dumpValueMappings = dumpValueMappings;
     }
 
-    public Set<Integer> getOffsets() {
-        final ArrayList<Set<Integer>> results = new ArrayList<>();
+    public Iterable<Integer> getOffsets() {
+        RandomReadable firstReadable = dumpValueMappings.keySet().iterator().next();
+        Iterable<Integer> foundOffsets = new NaturalIncrementingSequence(0, firstReadable.size());
 
         for (Map.Entry<RandomReadable, T> entry : dumpValueMappings.entrySet()) {
             final RandomReadable readable = entry.getKey();
             final T value = entry.getValue();
-            results.add(
-                    new ConsumedSet<>(
-                            new TypeFinder<>(
-                                    alchemist,
-                                    readable,
-                                    new NaturalIncrementingSequence(0, readable.size())
-                            ).find(value)
-                    )
-            );
+
+            foundOffsets = new TypeFinder<>(
+                    alchemist,
+                    readable,
+                    foundOffsets
+            ).find(value);
         }
 
-        return new Intersect().analise(results);
+        return foundOffsets;
     }
 }
